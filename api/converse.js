@@ -94,6 +94,13 @@ const askFriendSchema = {
 };
 
 async function handler(req, res) {
+  // A warm-up ping. The page fires this on load so the first real search does
+  // not also pay for the container starting up, which was 7-8s of the first
+  // query. It touches no model and costs no quota.
+  if (req.method === 'GET') {
+    return res.status(200).json({ ok: true, warm: true });
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
@@ -139,24 +146,12 @@ async function handler(req, res) {
 
     const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
-    // A call that never returns is worse than one that fails: the page just
-    // spins. So every attempt gets a hard budget and we move on when it is
-    // spent. Promise.race cannot cancel the request, but it frees us to try
-    // the next model, which is what matters to the person waiting.
-    const withBudget = (p, ms, label) => Promise.race([
-      p,
-      new Promise((_, reject) => setTimeout(
-        () => reject(Object.assign(new Error(label + ' exceeded ' + ms + 'ms'), { status: 503 })),
-        ms))
-    ]);
-
     // The catalogue is the bulk of every prompt. Compact JSON, not indented:
     // the indentation was ~30% of the payload and carries no meaning.
     const systemInstruction = promptTemplate + '\n\nCATALOGUE:\n' + JSON.stringify(catalogue);
 
-    const baseConfig = {
-      contents: mappedMessages,
-      config: {
+    const configFor = (thinkingOff) => {
+      const config = {
         systemInstruction: systemInstruction,
         temperature: 0,
         // The answer is two sentences and at most eight ids. Without a ceiling
@@ -164,59 +159,94 @@ async function handler(req, res) {
         maxOutputTokens: 800,
         responseMimeType: 'application/json',
         responseSchema: responseSchema
-      }
+      };
+      // Extended reasoning is the variable part of the latency: the same
+      // request can take 5s or 60s depending on how long the model deliberates.
+      // Turning it off is not a worse model - it is the same model, not
+      // thinking, on a task that is mechanical: read the records, rank them,
+      // ask one question.
+      if (thinkingOff) config.thinkingConfig = { thinkingBudget: 0 };
+      return { contents: mappedMessages, config: config };
     };
 
-    // Extended reasoning is the likeliest source of a minute-long wait on a
-    // task this mechanical: read 37 records, rank them, ask one question.
-    // Turning it off is not a downgrade of the model - it is the same model,
-    // not deliberating. If the field is rejected we retry that model without it.
-    const fastConfig = {
-      contents: mappedMessages,
-      config: Object.assign({}, baseConfig.config, { thinkingConfig: { thinkingBudget: 0 } })
-    };
-
-    // Budgets fall as we go: the first model gets the most room, later ones
-    // are fallbacks and a slow fallback helps nobody.
-    const MODELS = [
-      { name: 'gemini-3.8-flash', ms: 11000 },
-      { name: 'gemini-3.5-flash', ms: 9000 },
-      { name: 'gemini-3.1-flash-lite', ms: 9000 }
+    // HEDGED REQUESTS.
+    //
+    // A chain of fallbacks only helps when a model ERRORS. It does nothing for
+    // the case that actually hurts - the same model answering in 5s one minute
+    // and 60s the next - because a slow call never fails, so the chain never
+    // advances, and every timeout we would wait out is added to the total.
+    //
+    // So: start the best model immediately, and if it has not answered within a
+    // couple of seconds, start the next one ALONGSIDE it rather than instead of
+    // it. First usable answer wins. The fast path is untouched - when the first
+    // model answers in 3s nothing else is ever sent - and the slow path is
+    // rescued by a second attempt instead of being waited out.
+    //
+    // Quality is protected by the head start: the strongest model is the only
+    // one running for the first 2.5s and so wins almost every race. A weaker
+    // model's answer is only ever used when the alternative was a minute of
+    // staring at a spinner.
+    const LADDER = [
+      { name: 'gemini-3.8-flash',      startAt: 0 },
+      // 3.5s, not 2s: a healthy first model usually answers around 5s, and a
+      // hedge fired earlier than this would win races the better model should
+      // win - and would fire on nearly every request, for nothing.
+      { name: 'gemini-3.5-flash',      startAt: 3500 },
+      // By 8s something is wrong and any sound answer beats none.
+      { name: 'gemini-3.1-flash-lite', startAt: 8000 }
     ];
+    const DEADLINE_MS = 16000;
 
-    let response, lastError, servedBy = null, noThinking = true;
     const startedAt = Date.now();
+    let servedBy = null, thinkingOff = true, hedged = false, won = false;
 
-    outer:
-    for (const m of MODELS) {
-      for (let attempt = 0; attempt < 2; attempt++) {
-        const cfg = noThinking ? fastConfig : baseConfig;
+    const attempt = async (m) => {
+      if (m.startAt) {
+        await delay(m.startAt);
+        // Someone already answered - do not spend the quota.
+        if (won) throw new Error('not needed');
+        hedged = true;
+      }
+      let useThinkingOff = thinkingOff;
+      for (let tries = 0; tries < 2; tries++) {
         try {
-          response = await withBudget(
-            ai.models.generateContent(Object.assign({ model: m.name }, cfg)),
-            m.ms, m.name);
+          const r = await ai.models.generateContent(
+            Object.assign({ model: m.name }, configFor(useThinkingOff)));
+          won = true;
           servedBy = m.name;
-          break outer;
+          return r;
         } catch (error) {
-          lastError = error;
           const code = error.status || error.code;
           const msg = String(error.message || '');
-
-          // The model does not accept a thinking budget: same model, same
-          // attempt, without that field. Not a failure worth falling back for.
-          if (noThinking && (code === 400 || /thinking|unknown name|invalid.*argument/i.test(msg))) {
-            noThinking = false;
-            attempt--;
+          // This model will not take a thinking budget. Same model, same
+          // attempt, without that field - not a reason to fall back.
+          if (useThinkingOff && (code === 400 || /thinking|unknown name|invalid.*argument/i.test(msg))) {
+            useThinkingOff = false;
+            thinkingOff = false;
             continue;
           }
-
-          const retryable = code === 503 || code === 429 || code === 500 || /exceeded \d+ms/.test(msg);
-          if (!retryable) throw error;
-          if (attempt === 0) await delay(300);
+          throw error;
         }
       }
+    };
+
+    let response;
+    try {
+      response = await Promise.race([
+        Promise.any(LADDER.map(attempt)),
+        delay(DEADLINE_MS).then(() => {
+          throw Object.assign(new Error('No model answered within ' + DEADLINE_MS + 'ms'), { status: 503 });
+        })
+      ]);
+    } catch (e) {
+      // Promise.any bundles every rejection; surface the first real one so the
+      // handler below can tell a capacity problem from a bug.
+      if (e && e.name === 'AggregateError') {
+        const real = (e.errors || []).find((x) => !/not needed/.test(String(x && x.message)));
+        throw real || Object.assign(new Error('Every model refused the request.'), { status: 503 });
+      }
+      throw e;
     }
-    if (!response) throw lastError;
 
     let content = response.text;
     // Strip markdown formatting if the model incorrectly wraps the JSON
@@ -225,7 +255,8 @@ async function handler(req, res) {
 
     parsedData._model = servedBy;
     parsedData._ms = Date.now() - startedAt;
-    parsedData._thinking = noThinking ? 'off' : 'on';
+    parsedData._thinking = thinkingOff ? 'off' : 'on';
+    parsedData._hedged = hedged;
     return res.status(200).json(parsedData);
   } catch (error) {
     console.error('API Error:', error);

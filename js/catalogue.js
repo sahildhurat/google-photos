@@ -132,7 +132,11 @@ function prepareCatalogueForAPI(records) {
     const out = { id: r.id, kind: r.kind, scene: r.scene };
     if (r.taken_at) out.taken_at = r.taken_at;
     if (r.place && r.place.name) {
-      out.place = r.place.area ? r.place.name + ', ' + r.place.area : r.place.name;
+      // `area` usually already starts with `name` ("Hampi" / "Hampi, Karnataka"),
+      // and "Hampi, Hampi, Karnataka" reads like two places to a model.
+      const area = r.place.area || '';
+      out.place = area.indexOf(r.place.name) === 0 ? area
+                : area ? r.place.name + ', ' + area : r.place.name;
     }
     if (r.people && r.people.length) out.people = r.people;
     if (r.visible_only_on_close_look && r.visible_only_on_close_look.length) {
