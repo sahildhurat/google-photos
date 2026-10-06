@@ -1,4 +1,15 @@
-const { GoogleGenAI, Type } = require('@google/genai');
+/* The conversation engine.
+ *
+ * MODULE FORMAT: this file is CommonJS, end to end. There is no
+ * "type": "module" in package.json, so Node parses every .js here as
+ * CommonJS, and a single `export default` anywhere makes the whole module
+ * fail to parse - which means the function dies before the handler runs and
+ * the caller gets a bare 500 with no JSON body. So: module.exports at the
+ * bottom, and the SDK is pulled in with a dynamic import() inside the
+ * handler, which works from CommonJS whether or not @google/genai ships as
+ * ESM-only. Schema types are the plain uppercase strings the API expects,
+ * so the `Type` enum is not needed at module scope.
+ */
 
 const SYSTEM_HUNT = `
 You are the conversation engine for a personal photo retrieval system.
@@ -61,40 +72,52 @@ different candidate.
 `;
 
 const huntSchema = {
-  type: Type.OBJECT,
+  type: 'OBJECT',
   properties: {
-    say: { type: Type.STRING },
-    candidates: { type: Type.ARRAY, items: { type: Type.STRING } },
-    cannot_distinguish: { type: Type.BOOLEAN },
-    co_present: { type: Type.ARRAY, items: { type: Type.STRING } }
+    say: { type: 'STRING' },
+    candidates: { type: 'ARRAY', items: { type: 'STRING' } },
+    cannot_distinguish: { type: 'BOOLEAN' },
+    co_present: { type: 'ARRAY', items: { type: 'STRING' } }
   },
-  required: ["say", "candidates", "cannot_distinguish", "co_present"]
+  required: ['say', 'candidates', 'cannot_distinguish', 'co_present']
 };
 
 const askFriendSchema = {
-  type: Type.OBJECT,
+  type: 'OBJECT',
   properties: {
-    question: { type: Type.STRING },
-    options: { type: Type.ARRAY, items: { type: Type.STRING } },
-    why: { type: Type.STRING }
+    question: { type: 'STRING' },
+    options: { type: 'ARRAY', items: { type: 'STRING' } },
+    why: { type: 'STRING' }
   },
-  required: ["question", "options", "why"]
+  required: ['question', 'options', 'why']
 };
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ error: 'API key not configured' });
+    // Distinct wording, so this is never confused with a model outage.
+    return res.status(500).json({
+      error: 'GEMINI_API_KEY is not set on this deployment.'
+    });
   }
 
   try {
-    const { mode = 'hunt', messages, catalogue } = req.body;
+    // Vercel normally parses JSON bodies, but a wrong content-type leaves a
+    // string, and destructuring that silently yields undefined.
+    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+    const { mode = 'hunt', messages, catalogue } = body;
 
+    if (!Array.isArray(messages) || !messages.length) {
+      return res.status(400).json({ error: 'No messages were sent.' });
+    }
+
+    const { GoogleGenAI } = require('@google/genai');
     const ai = new GoogleGenAI({ apiKey });
+
     let promptTemplate;
     if (mode === 'ask_friend') {
       promptTemplate = SYSTEM_ASK_FRIEND;
@@ -103,27 +126,26 @@ export default async function handler(req, res) {
     } else {
       promptTemplate = SYSTEM_HUNT;
     }
-    
+
     // System instruction includes the prompt and the catalogue
     const systemInstruction = `${promptTemplate}\n\nCATALOGUE:\n${JSON.stringify(catalogue, null, 2)}`;
-    
+
     // Map roles: 'assistant' -> 'model', 'user' -> 'user'
-    const mappedMessages = messages.map(m => ({
+    const mappedMessages = messages.map((m) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }]
     }));
 
     // Note: We reuse huntSchema for 'single' mode. cannot_distinguish and co_present are permitted but ignored.
     const responseSchema = mode === 'ask_friend' ? askFriendSchema : huntSchema;
-    
-    // Robust retry wrapper to seamlessly bypass temporary 503 capacity errors
-    const delay = ms => new Promise(res => setTimeout(res, ms));
+
+    const delay = (ms) => new Promise((r) => setTimeout(r, ms));
     const baseConfig = {
       contents: mappedMessages,
       config: {
         systemInstruction: systemInstruction,
         temperature: 0,
-        responseMimeType: "application/json",
+        responseMimeType: 'application/json',
         responseSchema: responseSchema
       }
     };
@@ -160,16 +182,19 @@ export default async function handler(req, res) {
 
     return res.status(200).json(parsedData);
   } catch (error) {
-    console.error("API Error:", error);
+    console.error('API Error:', error);
     const code = error.status || error.code;
     if (code === 503 || code === 429 || code === 500) {
       // Capacity, not a fault in the product. Say so plainly so a reviewer
       // knows to try again rather than concluding the demo is broken.
       return res.status(503).json({
-        error: "The model is busy right now. Give it a few seconds and try again.",
+        error: 'The model is busy right now. Give it a few seconds and try again.',
         retryable: true
       });
     }
-    return res.status(502).json({ error: error.message || "Unknown error occurred" });
+    return res.status(502).json({ error: error.message || 'Unknown error occurred' });
   }
 }
+
+module.exports = handler;
+module.exports.default = handler;
