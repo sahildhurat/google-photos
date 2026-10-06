@@ -128,9 +128,6 @@ async function handler(req, res) {
       promptTemplate = SYSTEM_HUNT;
     }
 
-    // System instruction includes the prompt and the catalogue
-    const systemInstruction = `${promptTemplate}\n\nCATALOGUE:\n${JSON.stringify(catalogue, null, 2)}`;
-
     // Map roles: 'assistant' -> 'model', 'user' -> 'user'
     const mappedMessages = messages.map((m) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
@@ -141,36 +138,81 @@ async function handler(req, res) {
     const responseSchema = mode === 'ask_friend' ? askFriendSchema : huntSchema;
 
     const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    // A call that never returns is worse than one that fails: the page just
+    // spins. So every attempt gets a hard budget and we move on when it is
+    // spent. Promise.race cannot cancel the request, but it frees us to try
+    // the next model, which is what matters to the person waiting.
+    const withBudget = (p, ms, label) => Promise.race([
+      p,
+      new Promise((_, reject) => setTimeout(
+        () => reject(Object.assign(new Error(label + ' exceeded ' + ms + 'ms'), { status: 503 })),
+        ms))
+    ]);
+
+    // The catalogue is the bulk of every prompt. Compact JSON, not indented:
+    // the indentation was ~30% of the payload and carries no meaning.
+    const systemInstruction = promptTemplate + '\n\nCATALOGUE:\n' + JSON.stringify(catalogue);
+
     const baseConfig = {
       contents: mappedMessages,
       config: {
         systemInstruction: systemInstruction,
         temperature: 0,
+        // The answer is two sentences and at most eight ids. Without a ceiling
+        // a model is free to spend minutes on a reply this small.
+        maxOutputTokens: 800,
         responseMimeType: 'application/json',
         responseSchema: responseSchema
       }
     };
 
-    // A 503 on the newest flagship is a capacity error, and retrying the SAME
-    // model usually hits the same shortage. So fall back down the family:
-    // older Flash models carry far less load and are on the same free tier.
-    // Two attempts per model, then move on. Total worst case ~6s.
-    const MODELS = ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.1-flash-lite'];
-    let response, lastError;
+    // Extended reasoning is the likeliest source of a minute-long wait on a
+    // task this mechanical: read 37 records, rank them, ask one question.
+    // Turning it off is not a downgrade of the model - it is the same model,
+    // not deliberating. If the field is rejected we retry that model without it.
+    const fastConfig = {
+      contents: mappedMessages,
+      config: Object.assign({}, baseConfig.config, { thinkingConfig: { thinkingBudget: 0 } })
+    };
+
+    // Budgets fall as we go: the first model gets the most room, later ones
+    // are fallbacks and a slow fallback helps nobody.
+    const MODELS = [
+      { name: 'gemini-3.8-flash', ms: 11000 },
+      { name: 'gemini-3.5-flash', ms: 9000 },
+      { name: 'gemini-3.1-flash-lite', ms: 9000 }
+    ];
+
+    let response, lastError, servedBy = null, noThinking = true;
+    const startedAt = Date.now();
 
     outer:
-    for (const model of MODELS) {
+    for (const m of MODELS) {
       for (let attempt = 0; attempt < 2; attempt++) {
+        const cfg = noThinking ? fastConfig : baseConfig;
         try {
-          response = await ai.models.generateContent({ model, ...baseConfig });
-          if (model !== MODELS[0]) console.warn(`Served by fallback model ${model}`);
+          response = await withBudget(
+            ai.models.generateContent(Object.assign({ model: m.name }, cfg)),
+            m.ms, m.name);
+          servedBy = m.name;
           break outer;
         } catch (error) {
           lastError = error;
           const code = error.status || error.code;
-          const overloaded = code === 503 || code === 429 || code === 500;
-          if (!overloaded) throw error;           // a real error: surface it
-          if (attempt === 0) await delay(800);    // one quick retry, same model
+          const msg = String(error.message || '');
+
+          // The model does not accept a thinking budget: same model, same
+          // attempt, without that field. Not a failure worth falling back for.
+          if (noThinking && (code === 400 || /thinking|unknown name|invalid.*argument/i.test(msg))) {
+            noThinking = false;
+            attempt--;
+            continue;
+          }
+
+          const retryable = code === 503 || code === 429 || code === 500 || /exceeded \d+ms/.test(msg);
+          if (!retryable) throw error;
+          if (attempt === 0) await delay(300);
         }
       }
     }
@@ -181,6 +223,9 @@ async function handler(req, res) {
     content = content.replace(/^```json\s*/, '').replace(/\s*```$/, '').trim();
     const parsedData = JSON.parse(content);
 
+    parsedData._model = servedBy;
+    parsedData._ms = Date.now() - startedAt;
+    parsedData._thinking = noThinking ? 'off' : 'on';
     return res.status(200).json(parsedData);
   } catch (error) {
     console.error('API Error:', error);

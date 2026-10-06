@@ -118,12 +118,34 @@ function releaseImageURLs() {
 }
 
 /**
- * Prepares the catalogue for the API by stripping the file path
+ * Prepares the catalogue for the API.
+ *
+ * Everything the model cannot use is left behind, because the catalogue is the
+ * bulk of every prompt and every field travels on every turn. In particular
+ * `search_index` is the keyword index that Classic Search runs against, here in
+ * the browser - the model reads `scene` instead and never looks at it, so
+ * sending it was pure weight. Empty and false fields go too: an absent key says
+ * the same thing as `"people": []` and costs nothing to say.
  */
 function prepareCatalogueForAPI(records) {
   return records.map(r => {
-    const { file, ...rest } = r;
-    return rest;
+    const out = { id: r.id, kind: r.kind, scene: r.scene };
+    if (r.taken_at) out.taken_at = r.taken_at;
+    if (r.place && r.place.name) {
+      out.place = r.place.area ? r.place.name + ', ' + r.place.area : r.place.name;
+    }
+    if (r.people && r.people.length) out.people = r.people;
+    if (r.visible_only_on_close_look && r.visible_only_on_close_look.length) {
+      out.visible_only_on_close_look = r.visible_only_on_close_look;
+    }
+    if (r.cluster) out.cluster = r.cluster;
+    if (r.near_identical) out.near_identical = true;
+    // The phrases the user wrote on this photo. The dates are theirs to see on
+    // the Index page; the model only needs the words.
+    if (r.user_deposits && r.user_deposits.length) {
+      out.user_deposits = r.user_deposits.map(d => (d && d.said) || d).filter(Boolean);
+    }
+    return out;
   });
 }
 
