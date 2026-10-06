@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The One Where</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app-wrapper">
+    <div class="app-title">
+      <h1>The One Where</h1>
+      <p>Finding a photo you remember but can&rsquo;t describe. A curated demo library.</p>
+      <p class="app-hint">Try a search, then compare the three modes.</p>
+      <button id="mode-user-link" class="text-link-btn">Use your own photos</button>
+    </div>
+    <div id="first-load-note" class="first-load-note hidden" hidden>
+      <span>A curated demo set.</span>
+      <button id="dismiss-first-load" aria-label="Dismiss">✕</button>
+    </div>
+<header>
+      <div id="mode-switch-container" class="mode-switch library-switch hidden">
+        <button id="mode-demo" class="mode-btn active">Demo Library</button>
+        <button id="mode-user" class="mode-btn">Your Photos</button>
+      </div>
+      <!-- A comparison control is meaningless before there is a result to
+           compare, so this stays hidden until the first answer comes back. -->
+      <div id="search-toggle-container" class="mode-switch hidden" style="margin-top: 8px;">
+        <button id="toggle-classic" class="mode-btn">Classic Search</button>
+        <button id="toggle-single" class="mode-btn">Single answer</button>
+        <button id="toggle-converse" class="mode-btn active">The One Where</button>
+      </div>
+      
+    </header>
+  
+  <main id="comparison-view" class="hidden" style="flex: 1; overflow-y: auto; padding: var(--spacing-md); padding-bottom: 100px;">
+    <h2 id="comparison-title" style="text-align: center; margin-bottom: 16px;"></h2>
+    <div style="display: flex; flex-direction: column; gap: 24px; min-height: 400px;">
+      <!-- Classic Search Column -->
+      <div style="flex: 1; min-width: 250px; background: var(--surface-container-highest); padding: 16px; border-radius: var(--border-radius-lg);">
+        <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--on-surface);">Classic Search</h3>
+        <div id="compare-classic-results"></div>
+      </div>
+      <!-- Single Answer Column -->
+      <div style="flex: 1; min-width: 250px; background: var(--surface-container-highest); padding: 16px; border-radius: var(--border-radius-lg);">
+        <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--on-surface);">Single Answer</h3>
+        <div id="compare-single-results"></div>
+      </div>
+      <!-- The One Where Column -->
+      <div style="flex: 1; min-width: 250px; background: var(--surface-container-highest); padding: 16px; border-radius: var(--border-radius-lg);">
+        <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--on-surface);">The One Where</h3>
+        <div id="compare-converse-results"></div>
+      </div>
+    </div>
+  </main>
+  
+  <main id="thread">
+    <!-- Consent Screen (Hidden by default) -->
+    <div id="consent-screen" class="hidden">
+      <h2>Your Photos, Your Rules</h2>
+      <p>This mode uses your real photos to test the engine. Here is what happens:</p>
+      <ul>
+        <li>Photos are shrunk down in your browser before sending. Full-size files never leave your device.</li>
+        <li>We don't save your photos on our server. They stay in your browser's local storage.</li>
+        <li><strong>Notice:</strong> Because we use Google's free tier, Google may use the downscaled images sent for description to improve their models.</li>
+      </ul>
+      <p>You can delete everything from your browser at any time.</p>
+      
+      <input type="file" id="file-upload" multiple accept="image/*" class="hidden">
+      <button id="btn-pick-photos" class="primary-btn">I understand, pick 10–60 photos</button>
+      <button id="btn-delete-all" class="danger-btn">Delete everything</button>
+      
+      <div id="upload-progress" class="hidden">
+        <p id="progress-text">Describing 0 of 0...</p>
+        <div class="progress-bar-bg"><div id="progress-bar-fill"></div></div>
+      </div>
+    </div>
+
+    <!-- Notification Card (Scratch Card) -->
+    <div id="scratch-notification" class="notification-card hidden">
+      <div class="notification-content">
+        <div class="notification-icon">✨</div>
+        <div class="notification-text">
+          <h4>Your card is ready</h4>
+          <p id="scratch-teaser-text">A photo you've forgotten</p>
+        </div>
+      </div>
+      <button id="dismiss-notification" class="notification-close" aria-label="Dismiss">✕</button>
+    </div>
+
+    <!-- Default greeting for demo mode -->
+    <div id="default-greeting" class="message assistant" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+      <div class="bubble">What do you remember? Say anything &mdash; a colour, who was there, roughly when.</div>
+      <div class="starters">
+        <span class="starters-label">Or try one of these</span>
+        <button class="starter-chip" data-q="the receipt from that clinic, it was about 1450">the receipt from that clinic, about &#8377;1450</button>
+        <button class="starter-chip" data-q="small place, yellowish wall, maybe green chairs, Dev had a cold coffee">a cafe &mdash; yellow wall, maybe green chairs</button>
+        <button class="starter-chip" data-q="the one where she's laughing and her eyes are almost closed">the one where her eyes are almost closed</button>
+      </div>
+    </div>
+  </main>
+
+  <main id="classic-search-view" class="hidden" style="flex: 1; overflow-y: auto; padding: var(--spacing-lg) var(--spacing-md); max-width: 640px; margin: 0 auto; width: 100%; padding-bottom: 100px;">
+    <div id="classic-results-message" style="margin-bottom: var(--spacing-md); font-weight: 500; text-align: center;"></div>
+    <div id="classic-results-grid" class="thumbnail-grid"></div>
+  </main>
+  
+  <footer id="input-row">
+    <div class="input-container">
+      <input type="text" id="user-input" placeholder="Anything you can recall...">
+      <button id="mic-btn" aria-label="Voice input">🎤</button>
+      <button id="send-btn" aria-label="Send">→</button>
+    </div>
+    </footer>
+    
+
+  </div> <!-- End #app-wrapper -->
+
+  
+  <!-- Photo modal overlay (hidden by default) -->
+  <div id="photo-modal" class="modal hidden">
+    <div class="modal-content">
+      <button id="modal-close" aria-label="Close">✕</button>
+      <img id="modal-img" alt="Selected photo">
+      <div id="modal-info"></div>
+      <button id="modal-thats-it">That's it</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/exifr/dist/lite.esm.js" type="module"></script>
+  <script src="js/idb.js"></script>
+  <script src="js/catalogue.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/render.js"></script>
+  <script type="module" src="js/upload.js"></script>
+  <script src="js/deposits.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/nav.js"></script>
+</body>
+</html>

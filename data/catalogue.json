@@ -1,0 +1,1189 @@
+[
+  {
+    "id": "p_0001",
+    "file": "images/p_0001.jpg",
+    "taken_at": "2019-08-17T09:42:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi, Karnataka"
+    },
+    "people": [
+      "Kavya"
+    ],
+    "kind": "photo",
+    "scene": "Small cafe interior, yellow-washed wall, blue plastic chairs, a woman alone at a table with a cold coffee",
+    "visible_only_on_close_look": [
+      "the chairs in this frame are blue",
+      "the street is visible through the open front"
+    ],
+    "cluster": "c_hampi_cafe",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "cafe",
+        "restaurant",
+        "indoor",
+        "chair",
+        "table"
+      ],
+      "ocr": [],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0002",
+    "file": "images/p_0002.jpg",
+    "taken_at": "2019-08-17T09:43:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi, Karnataka"
+    },
+    "people": [
+      "Kavya"
+    ],
+    "kind": "photo",
+    "scene": "Small cafe interior, yellow-washed wall, blue plastic chairs, a woman alone at the near table",
+    "visible_only_on_close_look": [
+      "the chairs in this frame are blue",
+      "a jar of snacks sits on the counter behind her"
+    ],
+    "cluster": "c_hampi_cafe",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "cafe",
+        "restaurant",
+        "indoor",
+        "chair",
+        "table"
+      ],
+      "ocr": [],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0003",
+    "file": "images/p_0003.jpg",
+    "taken_at": "2019-08-17T09:44:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi, Karnataka"
+    },
+    "people": [
+      "Kavya"
+    ],
+    "kind": "photo",
+    "scene": "Small cafe interior, yellow-washed wall, blue plastic chairs, tighter view of her table",
+    "visible_only_on_close_look": [
+      "the chairs in this frame are blue",
+      "the wooden table edge fills the lower frame"
+    ],
+    "cluster": "c_hampi_cafe",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "cafe",
+        "restaurant",
+        "indoor",
+        "chair",
+        "table"
+      ],
+      "ocr": [],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0004",
+    "file": "images/p_0004.jpg",
+    "taken_at": "2019-08-17T09:45:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi, Karnataka"
+    },
+    "people": [
+      "Kavya"
+    ],
+    "kind": "photo",
+    "scene": "Small cafe interior, yellow-washed wall, green plastic chairs, a woman alone at a table with a cold coffee",
+    "visible_only_on_close_look": [
+      "the chairs in this frame are GREEN, not blue",
+      "the cafe has two sets of chairs"
+    ],
+    "cluster": "c_hampi_cafe",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "cafe",
+        "restaurant",
+        "indoor",
+        "chair",
+        "table"
+      ],
+      "ocr": [],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0005",
+    "file": "images/p_0005.jpg",
+    "taken_at": "2019-08-17T09:46:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi, Karnataka"
+    },
+    "people": [
+      "Kavya"
+    ],
+    "kind": "photo",
+    "scene": "Small cafe interior, yellow-washed wall, green plastic chairs, closer view across the tables",
+    "visible_only_on_close_look": [
+      "the chairs in this frame are GREEN, not blue",
+      "the cafe has two sets of chairs"
+    ],
+    "cluster": "c_hampi_cafe",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "cafe",
+        "restaurant",
+        "indoor",
+        "chair",
+        "table"
+      ],
+      "ocr": [],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0011",
+    "file": "images/p_0011.jpg",
+    "taken_at": "2022-04-12T19:20:110+05:30",
+    "place": {
+      "name": "Bangalore",
+      "area": "Indiranagar"
+    },
+    "people": [
+      "Priya"
+    ],
+    "kind": "photo",
+    "scene": "Priya laughing at a cafe table, wide view of the room behind her",
+    "visible_only_on_close_look": [
+      "her coffee cup and saucer are in the frame",
+      "other diners are visible behind her"
+    ],
+    "cluster": "c_laughing",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "cafe",
+        "restaurant",
+        "indoor",
+        "woman",
+        "table",
+        "drink"
+      ],
+      "ocr": [],
+      "place": "Bangalore"
+    }
+  },
+  {
+    "id": "p_0012",
+    "file": "images/p_0012.jpg",
+    "taken_at": "2022-04-12T19:20:120+05:30",
+    "place": {
+      "name": "Bangalore",
+      "area": "Indiranagar"
+    },
+    "people": [
+      "Priya"
+    ],
+    "kind": "photo",
+    "scene": "Priya laughing at a cafe table, closer view",
+    "visible_only_on_close_look": [
+      "the cup is out of frame in this one"
+    ],
+    "cluster": "c_laughing",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "cafe",
+        "restaurant",
+        "indoor",
+        "woman",
+        "table",
+        "drink"
+      ],
+      "ocr": [],
+      "place": "Bangalore"
+    }
+  },
+  {
+    "id": "p_0013",
+    "file": "images/p_0013.jpg",
+    "taken_at": "2022-04-12T19:20:130+05:30",
+    "place": {
+      "name": "Bangalore",
+      "area": "Indiranagar"
+    },
+    "people": [
+      "Priya"
+    ],
+    "kind": "photo",
+    "scene": "Priya laughing at a cafe table, hand to her chest",
+    "visible_only_on_close_look": [
+      "her hair has fallen across her face"
+    ],
+    "cluster": "c_laughing",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "cafe",
+        "restaurant",
+        "indoor",
+        "woman",
+        "table",
+        "drink"
+      ],
+      "ocr": [],
+      "place": "Bangalore"
+    }
+  },
+  {
+    "id": "p_0014",
+    "file": "images/p_0014.jpg",
+    "taken_at": "2022-04-12T19:20:140+05:30",
+    "place": {
+      "name": "Bangalore",
+      "area": "Indiranagar"
+    },
+    "people": [
+      "Priya"
+    ],
+    "kind": "photo",
+    "scene": "Priya laughing at a cafe table, tightest framing of the set",
+    "visible_only_on_close_look": [
+      "almost none of the room is visible"
+    ],
+    "cluster": "c_laughing",
+    "near_identical": true,
+    "opened_since_capture": true,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "cafe",
+        "restaurant",
+        "indoor",
+        "woman",
+        "table",
+        "drink"
+      ],
+      "ocr": [],
+      "place": "Bangalore"
+    }
+  },
+  {
+    "id": "p_0015",
+    "file": "images/p_0015.jpg",
+    "taken_at": "2022-04-12T19:20:150+05:30",
+    "place": {
+      "name": "Bangalore",
+      "area": "Indiranagar"
+    },
+    "people": [
+      "Priya"
+    ],
+    "kind": "photo",
+    "scene": "Priya laughing at a cafe table, slightly higher angle",
+    "visible_only_on_close_look": [
+      "the table behind her is in frame"
+    ],
+    "cluster": "c_laughing",
+    "near_identical": true,
+    "opened_since_capture": true,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "cafe",
+        "restaurant",
+        "indoor",
+        "woman",
+        "table",
+        "drink"
+      ],
+      "ocr": [],
+      "place": "Bangalore"
+    }
+  },
+  {
+    "id": "p_0016",
+    "file": "images/p_0016.jpg",
+    "taken_at": "2022-04-12T19:20:160+05:30",
+    "place": {
+      "name": "Bangalore",
+      "area": "Indiranagar"
+    },
+    "people": [
+      "Priya"
+    ],
+    "kind": "photo",
+    "scene": "Priya laughing at a cafe table, softly focused",
+    "visible_only_on_close_look": [
+      "this frame is slightly out of focus - she moved as it was taken"
+    ],
+    "cluster": "c_laughing",
+    "near_identical": true,
+    "opened_since_capture": true,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "cafe",
+        "restaurant",
+        "indoor",
+        "woman",
+        "table",
+        "drink"
+      ],
+      "ocr": [
+        "Starbucks",
+        "450"
+      ],
+      "place": "Bangalore"
+    }
+  },
+  {
+    "id": "p_0021",
+    "file": "images/p_0021.jpg",
+    "taken_at": "2021-11-05T10:00:00+05:30",
+    "place": null,
+    "people": [],
+    "kind": "receipt",
+    "scene": "Printed store receipt from a supermarket on white thermal paper",
+    "visible_only_on_close_look": [
+      "the date says 2021",
+      "the total amount is Rs 450"
+    ],
+    "cluster": "c_receipts",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "printed",
+        "store",
+        "receipt",
+        "from",
+        "supermarket"
+      ],
+      "ocr": [],
+      "place": null
+    }
+  },
+  {
+    "id": "p_0022",
+    "file": "images/p_0022.jpg",
+    "taken_at": "2022-11-05T10:00:00+05:30",
+    "place": null,
+    "people": [],
+    "kind": "receipt",
+    "scene": "Printed store receipt from a supermarket on white thermal paper",
+    "visible_only_on_close_look": [
+      "the date says 2022",
+      "the total amount is Rs 450"
+    ],
+    "cluster": "c_receipts",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "printed",
+        "store",
+        "receipt",
+        "from",
+        "supermarket"
+      ],
+      "ocr": [],
+      "place": null
+    }
+  },
+  {
+    "id": "p_0023",
+    "file": "images/p_0023.jpg",
+    "taken_at": "2023-11-05T10:00:00+05:30",
+    "place": null,
+    "people": [],
+    "kind": "receipt",
+    "scene": "Printed store receipt from a supermarket on white thermal paper",
+    "visible_only_on_close_look": [
+      "the date says 2023",
+      "the total amount is Rs 450"
+    ],
+    "cluster": "c_receipts",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "printed",
+        "store",
+        "receipt",
+        "from",
+        "supermarket"
+      ],
+      "ocr": [],
+      "place": null
+    }
+  },
+  {
+    "id": "p_0024",
+    "file": "images/p_0024.jpg",
+    "taken_at": "2024-11-05T10:00:00+05:30",
+    "place": null,
+    "people": [],
+    "kind": "receipt",
+    "scene": "Printed store receipt from a supermarket on white thermal paper",
+    "visible_only_on_close_look": [
+      "the date says 2024",
+      "the total amount is Rs 450"
+    ],
+    "cluster": "c_receipts",
+    "near_identical": true,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "printed",
+        "store",
+        "receipt",
+        "from",
+        "supermarket"
+      ],
+      "ocr": [],
+      "place": null
+    }
+  },
+  {
+    "id": "p_0031",
+    "file": "images/p_0031.jpg",
+    "taken_at": "2023-10-15T8:15:00+05:30",
+    "place": {
+      "name": "Triund",
+      "area": "Himachal Pradesh"
+    },
+    "people": [
+      "Dev",
+      "Amit"
+    ],
+    "kind": "photo",
+    "scene": "Three friends at a summit signboard on a rocky trail, arms around each other",
+    "visible_only_on_close_look": [
+      "a wooden sign names the trek and the altitude",
+      "trekking poles and boots in the foreground"
+    ],
+    "cluster": "c_trek",
+    "near_identical": false,
+    "opened_since_capture": true,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "group",
+        "three",
+        "standing",
+        "start",
+        "mountain"
+      ],
+      "ocr": [],
+      "place": "Triund"
+    }
+  },
+  {
+    "id": "p_0032",
+    "file": "images/p_0032.jpg",
+    "taken_at": "2023-10-15T9:15:00+05:30",
+    "place": {
+      "name": "Triund",
+      "area": "Himachal Pradesh"
+    },
+    "people": [
+      "Dev",
+      "Amit"
+    ],
+    "kind": "photo",
+    "scene": "Three friends at a summit signboard on a rocky trail, arms around each other",
+    "visible_only_on_close_look": [
+      "a wooden sign names the trek and the altitude",
+      "trekking poles and boots in the foreground"
+    ],
+    "cluster": "c_trek",
+    "near_identical": false,
+    "opened_since_capture": true,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "steep",
+        "rocky",
+        "section",
+        "trail",
+        "climbing"
+      ],
+      "ocr": [],
+      "place": "Triund"
+    }
+  },
+  {
+    "id": "p_0033",
+    "file": "images/p_0033.jpg",
+    "taken_at": "2023-10-15T10:15:00+05:30",
+    "place": {
+      "name": "Triund",
+      "area": "Himachal Pradesh"
+    },
+    "people": [
+      "Dev",
+      "Amit"
+    ],
+    "kind": "photo",
+    "scene": "Three friends at the summit signboard, a wider view down the valley",
+    "visible_only_on_close_look": [
+      "the valley and a cut trail are visible behind them"
+    ],
+    "cluster": "c_trek",
+    "near_identical": false,
+    "opened_since_capture": true,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "three",
+        "taking",
+        "break",
+        "fallen",
+        "log"
+      ],
+      "ocr": [],
+      "place": "Triund"
+    }
+  },
+  {
+    "id": "p_0034",
+    "file": "images/p_0034.jpg",
+    "taken_at": "2023-10-15T11:15:00+05:30",
+    "place": {
+      "name": "Triund",
+      "area": "Himachal Pradesh"
+    },
+    "people": [
+      "Dev",
+      "Amit"
+    ],
+    "kind": "photo",
+    "scene": "Three friends at the summit signboard, a wider view down the valley",
+    "visible_only_on_close_look": [
+      "the valley and a cut trail are visible behind them"
+    ],
+    "cluster": "c_trek",
+    "near_identical": false,
+    "opened_since_capture": true,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "view",
+        "valley",
+        "from",
+        "high",
+        "vantage"
+      ],
+      "ocr": [],
+      "place": "Triund"
+    }
+  },
+  {
+    "id": "p_0108",
+    "file": "images/p_0108.jpg",
+    "taken_at": "2023-07-28T22:14:00+05:30",
+    "place": null,
+    "people": [],
+    "kind": "screenshot",
+    "scene": "A screenshot of a group chat about a trek",
+    "visible_only_on_close_look": [
+      "someone asks what time they are leaving",
+      "the reply says 5 am"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "screenshot",
+        "chat",
+        "messaging",
+        "text",
+        "phone"
+      ],
+      "ocr": [
+        "Trek crew",
+        "5 am sharp",
+        "Dev",
+        "Amit"
+      ],
+      "place": null
+    }
+  },
+  {
+    "id": "p_0119",
+    "file": "images/p_0119.jpg",
+    "taken_at": "2019-08-17T10:15:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi"
+    },
+    "people": [],
+    "kind": "receipt",
+    "scene": "A cafe receipt with two cold coffees",
+    "visible_only_on_close_look": [
+      "the total is Rs 642.60",
+      "two cold coffees and a sandwich"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": true,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "receipt",
+        "cafe",
+        "text",
+        "document",
+        "store"
+      ],
+      "ocr": [
+        "GANESH CAFE",
+        "17/08/2019",
+        "642.60"
+      ],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0122",
+    "file": "images/p_0122.jpg",
+    "taken_at": "2019-08-16T21:30:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi"
+    },
+    "people": [],
+    "kind": "screenshot",
+    "scene": "A screenshot of a chat confirming a cafe meet-up",
+    "visible_only_on_close_look": [
+      "a place and a time are agreed",
+      "the next morning"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "screenshot",
+        "chat",
+        "messaging",
+        "text",
+        "phone"
+      ],
+      "ocr": [
+        "same cafe",
+        "9 am"
+      ],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0301",
+    "file": "images/p_0301.jpg",
+    "taken_at": "2019-08-17T09:48:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi"
+    },
+    "people": [],
+    "kind": "photo",
+    "scene": "A handwritten cafe menu board on a yellow wall",
+    "visible_only_on_close_look": [
+      "the board lists cold coffee and masala chai",
+      "prices are chalked beside each item"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "menu",
+        "board",
+        "cafe",
+        "sign",
+        "wall"
+      ],
+      "ocr": [
+        "GANESH CAFE",
+        "COLD COFFEE",
+        "MASALA CHAI"
+      ],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0302",
+    "file": "images/p_0302.jpg",
+    "taken_at": "2019-08-17T09:52:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi"
+    },
+    "people": [],
+    "kind": "photo",
+    "scene": "Blue plastic chairs stacked against a cafe wall",
+    "visible_only_on_close_look": [
+      "the chairs are the moulded plastic kind",
+      "the floor is bare concrete"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "chair",
+        "furniture",
+        "indoor",
+        "cafe",
+        "plastic"
+      ],
+      "ocr": [],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0303",
+    "file": "images/p_0303.jpg",
+    "taken_at": "2019-08-17T09:40:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi"
+    },
+    "people": [],
+    "kind": "photo",
+    "scene": "A busy street seen through the open front of a cafe",
+    "visible_only_on_close_look": [
+      "scooters and a rickshaw are parked outside",
+      "shop awnings across the road"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "street",
+        "outdoor",
+        "vehicle",
+        "town",
+        "doorway"
+      ],
+      "ocr": [],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0304",
+    "file": "images/p_0304.jpg",
+    "taken_at": "2019-08-17T10:05:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi"
+    },
+    "people": [],
+    "kind": "photo",
+    "scene": "Green plastic chairs around a wooden table in a cafe",
+    "visible_only_on_close_look": [
+      "these chairs are green, not blue",
+      "a cloth bag hangs off one chair"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "chair",
+        "table",
+        "indoor",
+        "cafe",
+        "furniture"
+      ],
+      "ocr": [],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0305",
+    "file": "images/p_0305.jpg",
+    "taken_at": "2019-08-17T09:55:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi"
+    },
+    "people": [
+      "Kavya"
+    ],
+    "kind": "photo",
+    "scene": "Kavya at a cafe table with a tall glass of cold coffee",
+    "visible_only_on_close_look": [
+      "the glass is almost full",
+      "a phone face-down on the table"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "drink",
+        "coffee",
+        "table",
+        "cafe",
+        "person"
+      ],
+      "ocr": [],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0306",
+    "file": "images/p_0306.jpg",
+    "taken_at": "2019-08-17T10:00:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi"
+    },
+    "people": [],
+    "kind": "photo",
+    "scene": "Framed pictures on the wall above a cafe counter",
+    "visible_only_on_close_look": [
+      "a row of small framed prints",
+      "a ceiling light hangs beside them"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "wall",
+        "frame",
+        "picture",
+        "indoor",
+        "cafe"
+      ],
+      "ocr": [],
+      "place": "Hampi"
+    }
+  },
+  {
+    "id": "p_0311",
+    "file": "images/p_0311.jpg",
+    "taken_at": "2022-02-19T16:20:00+05:30",
+    "place": null,
+    "people": [],
+    "kind": "photo",
+    "scene": "A cappuccino on a wooden table, someone's arms resting beside it",
+    "visible_only_on_close_look": [
+      "the cup sits on a saucer",
+      "a green knitted sleeve"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "coffee",
+        "cup",
+        "table",
+        "cafe",
+        "indoor"
+      ],
+      "ocr": [],
+      "place": null
+    }
+  },
+  {
+    "id": "p_0312",
+    "file": "images/p_0312.jpg",
+    "taken_at": "2022-02-19T16:05:00+05:30",
+    "place": null,
+    "people": [],
+    "kind": "photo",
+    "scene": "Warm lights blurred behind someone's shoulder in a cafe",
+    "visible_only_on_close_look": [
+      "a row of filament bulbs out of focus",
+      "hair across the left of frame"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "light",
+        "indoor",
+        "cafe",
+        "blur",
+        "bokeh"
+      ],
+      "ocr": [],
+      "place": null
+    }
+  },
+  {
+    "id": "p_0321",
+    "file": "images/p_0321.jpg",
+    "taken_at": "2023-07-29T11:20:00+05:30",
+    "place": {
+      "name": "Triund",
+      "area": "Triund"
+    },
+    "people": [
+      "Dev",
+      "Amit"
+    ],
+    "kind": "photo",
+    "scene": "Two trekkers holding a wooden summit signboard",
+    "visible_only_on_close_look": [
+      "the sign names the trek and the altitude",
+      "trekking poles on either side"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "sign",
+        "board",
+        "mountain",
+        "trail",
+        "people"
+      ],
+      "ocr": [
+        "ROOPKUND TREK",
+        "SUMMIT",
+        "16,499 FT"
+      ],
+      "place": "Triund"
+    }
+  },
+  {
+    "id": "p_0322",
+    "file": "images/p_0322.jpg",
+    "taken_at": "2023-07-29T10:40:00+05:30",
+    "place": {
+      "name": "Triund",
+      "area": "Triund"
+    },
+    "people": [],
+    "kind": "photo",
+    "scene": "Pine trees with a rocky peak rising behind them",
+    "visible_only_on_close_look": [
+      "bare trunks among the pines",
+      "the peak is grey, not snowy"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "tree",
+        "pine",
+        "mountain",
+        "forest",
+        "outdoor"
+      ],
+      "ocr": [],
+      "place": "Triund"
+    }
+  },
+  {
+    "id": "p_0323",
+    "file": "images/p_0323.jpg",
+    "taken_at": "2023-07-29T11:22:00+05:30",
+    "place": {
+      "name": "Triund",
+      "area": "Triund"
+    },
+    "people": [],
+    "kind": "photo",
+    "scene": "A hand gripping a trekking pole on a rocky slope",
+    "visible_only_on_close_look": [
+      "loose scree underfoot",
+      "a blue sleeve pushed back"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "hand",
+        "pole",
+        "rock",
+        "trail",
+        "outdoor"
+      ],
+      "ocr": [],
+      "place": "Triund"
+    }
+  },
+  {
+    "id": "p_0324",
+    "file": "images/p_0324.jpg",
+    "taken_at": "2023-07-29T10:45:00+05:30",
+    "place": {
+      "name": "Triund",
+      "area": "Triund"
+    },
+    "people": [],
+    "kind": "photo",
+    "scene": "A red trail marker nailed to a tree, mountains behind",
+    "visible_only_on_close_look": [
+      "the marker is an arrow pointing up",
+      "a valley drops away past the tree"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "marker",
+        "tree",
+        "mountain",
+        "trail",
+        "outdoor"
+      ],
+      "ocr": [],
+      "place": "Triund"
+    }
+  },
+  {
+    "id": "p_0325",
+    "file": "images/p_0325.jpg",
+    "taken_at": "2023-07-29T09:55:00+05:30",
+    "place": {
+      "name": "Triund",
+      "area": "Triund"
+    },
+    "people": [],
+    "kind": "photo",
+    "scene": "Four people walking down a rocky trail with poles and packs",
+    "visible_only_on_close_look": [
+      "everyone is carrying a pack",
+      "the trail is loose stone"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "people",
+        "trail",
+        "hiking",
+        "mountain",
+        "outdoor"
+      ],
+      "ocr": [],
+      "place": "Triund"
+    }
+  },
+  {
+    "id": "p_0326",
+    "file": "images/p_0326.jpg",
+    "taken_at": "2023-07-29T09:30:00+05:30",
+    "place": {
+      "name": "Triund",
+      "area": "Triund"
+    },
+    "people": [],
+    "kind": "photo",
+    "scene": "Clouds over a distant ridge",
+    "visible_only_on_close_look": [
+      "the ridge is only just visible under the cloud",
+      "no foreground at all"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "sky",
+        "cloud",
+        "mountain",
+        "landscape",
+        "outdoor"
+      ],
+      "ocr": [],
+      "place": "Triund"
+    }
+  },
+  {
+    "id": "p_0327",
+    "file": "images/p_0327.jpg",
+    "taken_at": "2019-08-17T10:08:00+05:30",
+    "place": {
+      "name": "Hampi",
+      "area": "Hampi"
+    },
+    "people": [],
+    "kind": "photo",
+    "scene": "A ceiling fan and a wall clock in a small cafe",
+    "visible_only_on_close_look": [
+      "the clock reads a little past ten",
+      "paint peeling near the fan mount"
+    ],
+    "cluster": null,
+    "near_identical": false,
+    "opened_since_capture": false,
+    "user_deposits": [],
+    "search_index": {
+      "labels": [
+        "fan",
+        "clock",
+        "wall",
+        "indoor",
+        "cafe"
+      ],
+      "ocr": [],
+      "place": "Hampi"
+    }
+  }
+]

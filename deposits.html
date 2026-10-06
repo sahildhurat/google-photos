@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Index — The One Where</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+    .page-header {
+      padding: var(--spacing-lg) var(--spacing-md);
+      max-width: 640px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .back-link {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #deposits-list {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: var(--spacing-lg) var(--spacing-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+    }
+    .deposit-card {
+      display: flex;
+      gap: var(--spacing-md);
+      background: white;
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius-lg);
+      border: 1px solid var(--border-color);
+    }
+    .deposit-thumbnail {
+      flex-shrink: 0;
+      width: 120px;
+      height: 120px;
+      border-radius: var(--border-radius-md);
+      overflow: hidden;
+      background-color: #e5e7eb;
+    }
+    .deposit-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .deposit-info {
+      flex: 1;
+    }
+    .deposit-context {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-bottom: var(--spacing-sm);
+    }
+    .deposit-phrases {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .deposit-phrases li {
+      background: var(--user-msg-bg);
+      color: var(--user-msg-text);
+      padding: 6px 10px;
+      border-radius: var(--border-radius-md);
+      font-size: 0.9rem;
+      display: inline-block;
+    }
+    .deposit-text {
+      font-weight: 500;
+    }
+    .deposit-time {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin-left: 6px;
+    }
+    .empty-state {
+      text-align: center;
+      color: #6b7280;
+      padding: var(--spacing-xl) 0;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+<header class="page-header">
+    <h1>Your Index</h1>
+    <a href="index.html" class="back-link">← Back to search</a>
+  </header>
+  
+  <main id="deposits-list">
+    <!-- Rendered by js/deposits.js -->
+  </main>
+  
+  <script src="js/idb.js"></script>
+  <script src="js/catalogue.js"></script>
+  <script src="js/deposits.js"></script>
+  <script src="js/nav.js"></script>
+</body>
+</html>

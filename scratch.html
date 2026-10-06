@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, touch-action=none">
+  <title>Scratch Card — The One Where</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background-color: var(--bg-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .page-header {
+      width: 100%;
+      padding: var(--spacing-md) var(--spacing-lg);
+      background: white;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .back-link {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .reset-demo-btn {
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+      background: none;
+      border: 1px solid var(--border-color);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .scratch-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: var(--spacing-lg);
+    }
+    .scratch-card {
+      background: white;
+      padding: var(--spacing-lg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      width: 320px;
+      min-height: 420px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .photo-area {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: var(--spacing-md);
+      background: #f3f4f6;
+      touch-action: none;
+    }
+    .photo-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .scratch-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      touch-action: none;
+      transition: opacity 0.5s ease;
+    }
+    .scratch-canvas.cleared {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .not-this-one-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 3;
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      padding: 4px 8px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--error-color);
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .question-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: opacity 0.5s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .question-area.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .question-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+    .question-subtitle {
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+      margin-bottom: var(--spacing-md);
+    }
+    .input-row {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+    }
+    .input-row input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 9999px;
+      outline: none;
+    }
+    .input-row button {
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .payoff-chip {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: var(--surface-variant);
+      color: var(--primary-color);
+      border-radius: 9999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .empty-state {
+      padding: 40px 20px;
+      color: var(--on-surface-variant);
+    }
+    .reduce-motion-btn {
+      margin-top: 10px;
+      background: var(--surface-variant);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+<header class="page-header">
+    <a href="index.html" class="back-link">← Back to library</a>
+    <button id="reset-demo" class="reset-demo-btn">Reset demo state</button>
+  </header>
+  
+  <div class="scratch-container" id="main-container">
+    <div class="scratch-card" id="card-container">
+      <!-- Loading state -->
+      <div class="empty-state">Loading card...</div>
+    </div>
+  </div>
+  
+  <script src="js/idb.js"></script>
+  <script src="js/catalogue.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/deposits.js"></script>
+  <script src="js/scratch.js"></script>
+  <script src="js/nav.js"></script>
+</body>
+</html>

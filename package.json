@@ -1,0 +1,8 @@
+{
+  "name": "the-one-where",
+  "private": true,
+  "dependencies": {
+    "@google/genai": "2.27.0",
+    "puppeteer": "^25.12.0"
+  }
+}
