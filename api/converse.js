@@ -199,10 +199,20 @@ async function handler(req, res) {
 
     const startedAt = Date.now();
     let servedBy = null, thinkingOff = true, hedged = false, won = false;
+    const notes = [];
 
-    const attempt = async (m) => {
+    // A rung normally waits for its scheduled moment. But if the rung above it
+    // FAILS - a bad model name, a refused key, an instant 503 - there is nothing
+    // left to wait for, and holding the next one back for its full delay is dead
+    // time the person pays for. So each rung also has a gate that an earlier
+    // failure opens, and starts on whichever comes first.
+    const gates = LADDER.map(() => {
+      let open; const p = new Promise((r) => { open = r; }); return { p: p, open: open };
+    });
+
+    const attempt = async (m, i) => {
       if (m.startAt) {
-        await delay(m.startAt);
+        await Promise.race([delay(m.startAt), gates[i].p]);
         // Someone already answered - do not spend the quota.
         if (won) throw new Error('not needed');
         hedged = true;
@@ -225,6 +235,10 @@ async function handler(req, res) {
             thinkingOff = false;
             continue;
           }
+          // Say why, so a model that is quietly failing every time shows up as
+          // a fact rather than as unexplained slowness.
+          notes.push(m.name + ' failed: ' + (code || '?') + ' ' + msg.slice(0, 140));
+          if (gates[i + 1]) gates[i + 1].open();
           throw error;
         }
       }
@@ -233,7 +247,7 @@ async function handler(req, res) {
     let response;
     try {
       response = await Promise.race([
-        Promise.any(LADDER.map(attempt)),
+        Promise.any(LADDER.map((m, i) => attempt(m, i))),
         delay(DEADLINE_MS).then(() => {
           throw Object.assign(new Error('No model answered within ' + DEADLINE_MS + 'ms'), { status: 503 });
         })
@@ -257,6 +271,7 @@ async function handler(req, res) {
     parsedData._ms = Date.now() - startedAt;
     parsedData._thinking = thinkingOff ? 'off' : 'on';
     parsedData._hedged = hedged;
+    if (notes.length) parsedData._notes = notes;
     return res.status(200).json(parsedData);
   } catch (error) {
     console.error('API Error:', error);
