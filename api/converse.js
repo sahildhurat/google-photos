@@ -28,6 +28,7 @@ Here are the behavioural rules you MUST follow:
 10. Two or three sentences. Talking, not writing.
 11. NEVER invent candidate IDs. The 'candidates' array must ONLY contain exact 'id' strings from the provided catalogue (e.g., "p_0031", "p_0012").
 12. CRITICAL ANTI-HALLUCINATION RULE: If the user asks for specific visual elements (like "pizza", "wine", "dog", etc.) and those elements are NOT explicitly present in the provided catalogue records, you MUST NOT return any candidates. You must return an empty 'candidates' array [] and say "I cannot find any photos matching that description."
+13. EXACT DEPOSIT MATCH. A record's 'user_deposits' entries are phrases the user themselves wrote on that photo. If the user's latest message, ignoring case and punctuation, is EXACTLY one of those phrases, that photo is the answer - not a candidate to weigh. Put its id first in 'candidates', set 'cannot_distinguish' to false, and say plainly that this is the one they labelled with those words. Do not ask a splitting question; they have already answered it. A partial overlap is NOT an exact match: if they typed "blue" and the deposit reads "blue chairs", rule 13 does not apply and you rank normally.
 
 - candidates: best-first, at most 8. (Empty array [] if NO records contain the requested visual elements).
 - cannot_distinguish: true when top candidates are near-identical and the distinguishing detail is not in the records.
@@ -115,7 +116,7 @@ async function handler(req, res) {
       return res.status(400).json({ error: 'No messages were sent.' });
     }
 
-    const { GoogleGenAI } = require('@google/genai');
+    const { GoogleGenAI } = await import('@google/genai');
     const ai = new GoogleGenAI({ apiKey });
 
     let promptTemplate;

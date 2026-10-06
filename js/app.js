@@ -425,7 +425,7 @@ async function sendConversationMessage(text, modeStr = 'hunt') {
     });
     
     window.render.hideLoading();
-    window.render.renderAssistantMessage(data, catalogueList, modeStr === 'single' ? 'single' : 'hunt');
+    window.render.renderAssistantMessage(data, catalogueList, modeStr === 'single' ? 'single' : 'hunt', text);
     revealComparison();
     
   } catch (error) {
@@ -435,7 +435,7 @@ async function sendConversationMessage(text, modeStr = 'hunt') {
     window.render.renderAssistantMessage({
       say: error.message || "Something went wrong. Check your connection and try again.",
       candidates: []
-    }, catalogueList, modeStr === 'single' ? 'single' : 'hunt');
+    }, catalogueList, modeStr === 'single' ? 'single' : 'hunt', text);
     
     messages.pop();
     currentHuntUserMessages.pop();
