@@ -1,6 +1,21 @@
 let catalogueList = [];
 let currentScenario = 1;
 
+/* Who to ask.
+ *
+ * This was hard-coded to "Amit" while the search that led here named whoever is
+ * in the photo - a participant caught it immediately ("Why is it Amit now? In my
+ * actual search I'd ask Dev"). The person worth asking is someone who was there,
+ * and the records already say who that is, so take the name from the candidates
+ * rather than from a constant.
+ */
+let friendName = 'Amit';
+
+function friendFor(records) {
+  const withPeople = (records || []).find(r => r.people && r.people.length);
+  return (withPeople && withPeople.people[0]) || 'whoever was there';
+}
+
 // Mock conversation histories for the scenarios
 const scenarios = {
   1: {
@@ -85,6 +100,7 @@ function loadScenario(id) {
   
   // Render candidate grid
   const candidates = getCandidateRecords(id);
+  friendName = friendFor(candidates);
   const msgDiv = document.createElement('div');
   msgDiv.className = 'message assistant';
   
@@ -124,13 +140,13 @@ function loadScenario(id) {
   
   document.getElementById('ask-amit-btn').style.display = 'block';
   document.getElementById('ask-amit-btn').disabled = false;
-  document.getElementById('ask-amit-btn').textContent = "Ask Amit — he was there";
+  document.getElementById('ask-amit-btn').textContent = 'Ask ' + friendName + ' — they were there';
 }
 
 async function triggerAskAmit() {
   const btn = document.getElementById('ask-amit-btn');
   btn.disabled = true;
-  btn.textContent = "Asking Amit...";
+  btn.textContent = 'Asking ' + friendName + '…';
   
   const data = scenarios[currentScenario];
   const candidates = getCandidateRecords(currentScenario);
@@ -159,9 +175,9 @@ async function triggerAskAmit() {
     
   } catch (err) {
     console.error(err);
-    alert("Failed to ask Amit.");
+    alert('Couldn\'t reach ' + friendName + ' just now.');
     btn.disabled = false;
-    btn.textContent = "Ask Amit — he was there";
+    btn.textContent = 'Ask ' + friendName + ' — they were there';
   }
 }
 
@@ -245,13 +261,13 @@ async function submitAmitAnswer(answerText) {
   
   // Formulate the new history
   const data = scenarios[currentScenario];
-  const newMessages = [...data.messages, { role: "user", content: `Amit says: "${answerText}"` }];
+  const newMessages = [...data.messages, { role: "user", content: `${friendName} says: "${answerText}"` }];
   
   // Update left pane visibly
   const leftThread = document.getElementById('left-thread');
   const div = document.createElement('div');
   div.className = 'message user';
-  div.innerHTML = `<div class="bubble" style="background: #e5e7eb; color: #374151;">Amit says: "${answerText}"</div>`;
+  div.innerHTML = `<div class="bubble" style="background: #e5e7eb; color: #374151;">${friendName} says: "${answerText}"</div>`;
   leftThread.insertBefore(div, leftThread.lastElementChild);
   
   try {
@@ -282,7 +298,7 @@ async function submitAmitAnswer(answerText) {
       infoLine.style.fontSize = '0.9rem';
       infoLine.style.color = '#4b5563';
       infoLine.style.margin = '10px 0';
-      infoLine.textContent = currentScenario === 1 ? "Amit says it was the morning. That moves two photos up." : `Amit's input received. ${result.say}`;
+      infoLine.textContent = currentScenario === 1 ? `${friendName} says it was the morning. That moves two photos up.` : `${friendName}'s answer came back. ${result.say}`;
       leftThread.appendChild(infoLine);
       
       // Re-order grid (simulation of re-ranking)
@@ -327,7 +343,7 @@ function resolveDisagreementSimulation(candidates) {
   msgDiv.className = 'message assistant';
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
-  bubble.innerHTML = `You remember blue, Amit remembers green. Both are in these frames — there were two sets of chairs.`;
+  bubble.innerHTML = `You remember blue, ${friendName} remembers green. Both are in these frames — there were two sets of chairs.`;
   msgDiv.appendChild(bubble);
   leftThread.appendChild(msgDiv);
   

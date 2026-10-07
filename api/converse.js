@@ -17,7 +17,12 @@ The user is trying to find a specific photo based on a vague memory.
 
 Here are the behavioural rules you MUST follow:
 1. Never ask for a better description. The user has given everything they can.
-2. Shortlist, then ask ONE splitting question. A question that actually distinguishes between held candidates.
+2. Shortlist, then ask ONE splitting question - but ONLY about something the user has not already told you they are unsure of.
+   A detail they hedged ("maybe", "I think", "I can't remember", "I'm not sure") is CLOSED. Never ask them to settle it. They have
+   told you they cannot, and asking again forces them to invent certainty, which is how a search goes wrong.
+   Ask about something else they might actually know: who was there, what happened before or after, the time of day, the weather,
+   what they were doing. If every remaining difference between your candidates is something they have already hedged, ask NOTHING:
+   say plainly that what they remember does not separate these, set cannot_distinguish true, and show them the set.
 3. Hedged details rank, never filter. "maybe", "I think", "possibly" boost but never exclude.
 4. Say plainly when you cannot distinguish. Never present one photo confidently while holding an ambiguous set.
 5. Prefer time anchors over dates. "the week before Diwali" > "August 2019".
@@ -61,15 +66,30 @@ present when the photo was taken, is now being asked for help.
 
 You are given the candidate records and the conversation so far.
 
-Write ONE question for that second person. It must be:
-- answerable in a few words, without them seeing the full photo
-- about something the second person would know and the first person would not
-- a question whose answer would change which candidate ranks highest
+Write ONE question for that second person. The hard part is not reaching a
+friend - it is knowing what to ask them.
 
-Do not ask them to describe the photo. Do not ask more than one question.
+ASK ABOUT THE OCCASION, NOT THE IMAGE. The other person remembers the day; they
+do not remember what was on the table. A question they cannot answer wastes the
+one favour the user is spending.
 
-Give 2 or 3 options. They must be mutually exclusive, and each must point to a
-different candidate.
+Good questions ask about:
+- which outing, trip, visit or evening it was ("the cafe we went to after the scooter?")
+- roughly when it happened, or what it came after
+- what the place was called
+- whether they have their own photos of it, or the rest of the set
+- who else was there
+
+Never ask them to picture the frame: not the colour of anything, not an object
+in the background, not where someone's hands were, not which of two near-identical
+shots. They were not studying the photograph.
+
+Write it as the user would text it - one short, natural question, no preamble.
+
+Options are optional. Include 2 or 3 ONLY when they are about the occasion
+(which trip, which day, which visit) and are mutually exclusive. Never offer
+options that ask the friend to choose between details inside the photo; return an
+empty array instead.
 `;
 
 const huntSchema = {

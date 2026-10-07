@@ -56,15 +56,52 @@ async function init() {
   renderCard();
 }
 
+/* Which photo the card offers.
+ *
+ * Testing was blunt about this. Nobody rejected the card; they rejected being
+ * asked about a photo that did not deserve a sentence. "Whether I write anything
+ * depends on the picture. If it's a random bill, I'll skip it." "Some photographs
+ * don't need another sentence." "If a useful old one appears, I'd do that one."
+ *
+ * So the selection changed twice over:
+ *
+ *  - Documents, receipts and screenshots are out entirely. Two participants named
+ *    them unprompted, and one asked for the scratch step on documents to be
+ *    removed outright.
+ *  - A frame from a near-identical set is picked FIRST when one is available.
+ *    That is the photo a note genuinely rescues - it is the one case where no
+ *    amount of searching will separate it from its neighbours, so the ask carries
+ *    its own reason and the card can say what that reason is.
+ */
 function selectRecord(mode) {
   const exclusions = new Set(getExclusions());
-  const validRecords = catalogueList.filter(r => !exclusions.has(r.id) && (!r.user_deposits || r.user_deposits.length === 0));
-  
+  let validRecords = catalogueList.filter(r => !exclusions.has(r.id) && (!r.user_deposits || r.user_deposits.length === 0));
+
+  // A bill is not a memory. Keep documents out unless nothing else is left.
+  const photosOnly = validRecords.filter(r => r.kind === 'photo');
+  if (photosOnly.length) validRecords = photosOnly;
+
   if (validRecords.length === 0) return;
   
   if (mode === 'demo') {
     // Collect possible tiers
     const possibleTiers = [];
+
+    // Tier 0: a frame from a set that looks like its neighbours. Taken first
+    // whenever one exists - this is the photo the note actually saves.
+    const nearSets = {};
+    catalogueList.forEach(r => {
+      if (r.cluster && r.near_identical) (nearSets[r.cluster] = nearSets[r.cluster] || []).push(r);
+    });
+    const ambiguous = validRecords.find(r => r.cluster && r.near_identical && (nearSets[r.cluster] || []).length > 1);
+    if (ambiguous) {
+      currentRecord = ambiguous;
+      currentTier = {
+        level: 0,
+        label: `One of ${nearSets[ambiguous.cluster].length} shots from the same moment.`
+      };
+      return;
+    }
     
     // Tier 1: Any unopened photo
     const t1 = validRecords.find(r => r.opened_since_capture === false);
@@ -141,9 +178,21 @@ function getDateAnchor(dateString) {
 }
 
 function getTeaser(level) {
+  if (level === 0) return "One you can't tell apart";
   if (level === 3) return "Something rare";
   if (level === 2) return "A day you've forgotten";
   return "A photo you've forgotten";
+}
+
+// The ask names what the note is FOR. A participant only understood the point of
+// writing one after seeing it work: "It remembered my label and used that to get
+// this photo." Saying so up front costs a line.
+function getAsk(level) {
+  return level === 0
+    ? { title: 'What made this one different?',
+        why: 'Searching will never separate these. A note will.' }
+    : { title: 'What was this?',
+        why: 'Whatever you type becomes a way back to it.' };
 }
 
 function renderAlreadyScratched() {
@@ -157,6 +206,7 @@ function renderAlreadyScratched() {
 
 function renderCard() {
   const container = document.getElementById('card-container');
+  const ask = getAsk(currentTier.level);
   container.innerHTML = `
     <div class="photo-area" id="photo-area">
       <img src="${window.catalogue.getImageURL(currentRecord.id, 'demo')}" alt="Forgotten photo">
@@ -165,12 +215,14 @@ function renderCard() {
     </div>
     <div class="question-area" id="question-area">
       <div class="question-subtitle">${currentTier.label}</div>
-      <div class="question-title">What was this?</div>
+      <div class="question-title">${ask.title}</div>
+      <div class="question-why">${ask.why}</div>
       <div class="input-row" id="input-row">
         <input type="text" id="scratch-input" placeholder="Type or speak a memory...">
         <button id="scratch-mic" aria-label="Voice input">🎤</button>
         <button id="scratch-send" aria-label="Send">→</button>
       </div>
+      <button class="skip-btn" id="scratch-skip">Nothing to add</button>
       <div id="payoff-area" style="display:none;"></div>
     </div>
   `;
@@ -204,6 +256,7 @@ function renderCard() {
   inputEl.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') submitDeposit();
   });
+  document.getElementById('scratch-skip').addEventListener('click', skipDeposit);
 }
 
 function initCanvas() {
@@ -359,6 +412,26 @@ function submitDeposit() {
     </div>
     <a href="index.html?q=${encodeURIComponent(text)}" class="payoff-chip">Try finding it →</a>
   `;
+}
+
+/* Skipping has to be as finished as writing.
+ *
+ * "Let me skip it without making it feel unfinished." "I don't want a backlog of
+ * photos I'm supposed to describe." "I don't want to write a quote just to finish
+ * a card." Three of four asked for this in nearly the same words, so the skip is
+ * a real button beside the input rather than closing the tab, and what it says
+ * afterwards carries no debt: no streak broken, no counter, nothing owed.
+ *
+ * This is also why there is no streak. A streak is the obligation they rejected,
+ * wearing a nicer coat.
+ */
+function skipDeposit() {
+  document.getElementById('input-row').style.display = 'none';
+  document.getElementById('scratch-skip').style.display = 'none';
+  const payoffArea = document.getElementById('payoff-area');
+  payoffArea.style.display = 'block';
+  payoffArea.innerHTML =
+    '<div style="color:#5f6368">Left as it is. Not every photo needs a sentence.</div>';
 }
 
 document.addEventListener('DOMContentLoaded', init);

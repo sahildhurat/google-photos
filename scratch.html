@@ -121,8 +121,29 @@
     .question-title {
       font-size: 1.1rem;
       font-weight: 600;
-      margin-bottom: var(--spacing-sm);
+      margin-bottom: 4px;
     }
+    /* Says what the note is for, before asking for one. */
+    .question-why {
+      font-size: 0.85rem;
+      color: var(--accent-color, #1967d2);
+      margin-bottom: var(--spacing-md);
+    }
+    /* Deliberately the same visual weight as sending: skipping is a finished
+       state, not a failure to finish. No streak, no counter, nothing owed. */
+    .skip-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border: 0;
+      border-radius: 9999px;
+      background: var(--surface-container, #eeedf1);
+      color: var(--on-surface-variant, #5f6368);
+      font: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .skip-btn:hover { background: #e4e3e8; }
     .question-subtitle {
       font-size: 0.9rem;
       color: var(--on-surface-variant);
